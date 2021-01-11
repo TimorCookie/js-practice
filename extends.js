@@ -44,6 +44,38 @@ console.log('构造函数继承 ---- 属性：',child3)
 child4.hobies[1] = 'pc'
 console.log('构造函数继承 ---- 属性---child3：',child3)
 console.log('构造函数继承 ---- 属性---child4：',child4)
-// 缺点： child3.getName is not a function, 构造函数继承的方式继承不到父类原型上的属性和方法
-console.log(child3.getName())
+// 缺点： console.log(child3.getName()) ====> child3.getName is not a function, 构造函数继承的方式继承不到父类原型上的属性和方法
+// console.log(child3.getName())
 
+// ! 组合式继承
+function CombineChild(age) {
+  Parent.call(this, age)
+}
+
+CombineChild.prototype = new Parent()
+CombineChild.prototype.constructor = CombineChild
+
+const child5 = new CombineChild(20)
+console.log('组合式继承 ---- combineChild:', child5)
+console.log('组合式继承 ---- combineChild方法调用:',child5.getName())
+child5.hobies[2] = 'mobile'
+const child6 = new CombineChild(40)
+console.log('组合式继承 ---- child5:',child5)
+console.log('组合式继承 ---- child6:',child6)
+
+// !寄生组合式继承
+function ParasiticChild(age) {
+  Parent.call(this, age)
+}
+
+ParasiticChild.prototype = Object.create(Parent.prototype)
+ParasiticChild.prototype.constructor = ParasiticChild
+
+const child7 = new ParasiticChild(200)
+console.log('寄生组合式继承 ---- child7', child7)
+
+const child8 = new ParasiticChild(300)
+child8.hobies[0] = 'biu'
+console.log('寄生组合式继承 ---- child7', child7)
+console.log('寄生组合式继承 ---- child8', child8)
+console.log('寄生组合式继承 ---- child7方法', child7.getName())
